@@ -1,0 +1,5 @@
+query SelectPatients {
+  description: "Select all patients"
+  statement: 
+    SELECT org.med.chain.Patient
+}
