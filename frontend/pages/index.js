@@ -3,6 +3,8 @@ import { Input } from "antd";
 import { Row, Col } from "antd";
 import { Button } from "antd";
 import Link from "next/link";
+import config from '../config.js';
+import Router from 'next/router';
 
 class Index extends Component {
   state = {
@@ -10,8 +12,26 @@ class Index extends Component {
     iconLoading: false
   };
 
+  onHandleChange = (e) => {
+    const something = e.target.value;
+    localStorage.setItem('docid', something);
+    console.log(localStorage.getItem('docid'));
+  }
+
   enterLoading = () => {
     this.setState({ loading: true });
+    fetch(`${config.apiurl}/api/Doctor/${localStorage.getItem('docid')}`)
+    .then((res) => {
+      console.log(res);
+      if(res.status === 200){
+        //Next page
+        Router.push(`/profile`)
+      }
+      else {
+        //stay here
+      }
+    })
+
   };
 
   enterIconLoading = () => {
@@ -24,12 +44,12 @@ class Index extends Component {
         <Row>
           <Col xs={{ span: 12, offset: 6 }} lg={{ span: 12, offset: 6 }}>
             <center>
-              <h1>Something</h1>
+              <h1>HealthChain</h1>
             </center>
             <h2>Login</h2>
           </Col>
           <Col xs={{ span: 12, offset: 6 }} lg={{ span: 12, offset: 6 }}>
-            <Input placeholder="enter email" type="email" />
+            <Input placeholder="Doctor ID" type="email" onChange={this.onHandleChange} />
           </Col>
         </Row>
         <div className="spacer" style={{ height: 15 }} />
@@ -47,7 +67,6 @@ class Index extends Component {
           </Col>
           <Col xs={{ span: 12, offset: 6 }} lg={{ span: 12, offset: 6 }}>
             <div className="spacer" style={{ height: 15 }} />
-            <Link href="/chat">
               <Button
                 type="primary"
                 loading={this.state.loading}
@@ -55,7 +74,6 @@ class Index extends Component {
               >
                 Login
               </Button>
-            </Link>
           </Col>
         </Row>
       </div>

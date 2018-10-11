@@ -32,5 +32,6 @@
     "nyc": "latest",
     "mkdirp": "latest",
     "mocha": "latest"
-  }
+  },
+  "dependencies": {}
 }
