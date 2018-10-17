@@ -15,39 +15,33 @@
 /**
  * Sample access control list.
  */
-rule EverybodyCanReadEverything {
-    description: "Allow all participants read access to all resources"
-    participant: "org.med.chain.SampleParticipant"
+rule DoctorCanReadPatient {
+	description: "Allow doctor read access to all granted patients"
+    participant(p): "org.med.chain.Doctor"
     operation: READ
-    resource: "org.med.chain.*"
-    action: ALLOW
+    resource(r): "org.med.chain.Patient"
+    condition: (r.authorized && r.authorized.indexOf(r.getIdentifier())>-1) 
+  	action: ALLOW
 }
 
-rule EverybodyCanSubmitTransactions {
-    description: "Allow all participants to submit transactions"
-    participant: "org.med.chain.SampleParticipant"
-    operation: CREATE
-    resource: "org.med.chain.SampleTransaction"
-    action: ALLOW
+rule DoctorCanUpdateEHR {
+	description: "Allow doctor update access to all granted patients"
+    participant(p): "org.med.chain.Doctor"
+    operation: CREATE,UPDATE
+    resource(r): "org.med.chain.Patient"
+  	transaction(tx):"org.med.chain.UpdateRecord"
+    condition: (r.authorized && r.authorized.indexOf(p.getIdentifier())>-1) 
+  	action: ALLOW
 }
 
-rule OwnerHasFullAccessToTheirAssets {
-    description: "Allow all participants full access to their assets"
-    participant(p): "org.med.chain.SampleParticipant"
-    operation: ALL
-    resource(r): "org.med.chain.SampleAsset"
-    condition: (r.owner.getIdentifier() === p.getIdentifier())
-    action: ALLOW
+rule DoctorCanReadEHR {
+	description: "Allow doctor read access to all of the medical records associated with him"
+    participant(p): "org.med.chain.Doctor"
+    operation: READ
+    resource(r): "org.med.chain.MedicalRecord"
+    condition: (p.DoctorID == r.DoctorId)
+  	action: ALLOW
 }
-
-rule SystemACL {
-  description:  "System ACL to permit all access"
-  participant: "org.hyperledger.composer.system.Participant"
-  operation: ALL
-  resource: "org.hyperledger.composer.system.**"
-  action: ALLOW
-}
-
 rule NetworkAdminUser {
     description: "Grant business network administrators full access to user resources"
     participant: "org.hyperledger.composer.system.NetworkAdmin"
@@ -62,4 +56,12 @@ rule NetworkAdminSystem {
     operation: ALL
     resource: "org.hyperledger.composer.system.**"
     action: ALLOW
+}
+
+rule SystemACL {
+  description:  "System ACL to permit all access"
+  participant: "ANY"
+  operation: ALL
+  resource: "org.hyperledger.composer.system.**"
+  action: ALLOW
 }
