@@ -1,6 +1,6 @@
 # Medical Chain
 A blockchain approach to EHR (Electronic Health Records) using Hyperledger Composer and Fabric
-Built under 24 hours in Siemens MakeIT Hackathon (2nd Runners Up)[https://twitter.com/SiemensIndia/status/1050734872212336641]
+Built under 24 hours in Siemens MakeIT Hackathon [2nd Runners Up](https://twitter.com/SiemensIndia/status/1050734872212336641)
 
 ## Tools Used
 * Hyperledger Composer

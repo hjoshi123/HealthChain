@@ -42,11 +42,6 @@ class AddPatient extends Component {
       .then(response => response.json()); // parses response to JSON
   }
 
-
-  componentWillMount() {
-    localStorage.setItem('docid', 'EHR_Doc_4');
-  }
-
   componentDidMount() {
     fetch(`${config.apiurl}/api/Doctor_profile/${localStorage.getItem('docid')}`)
       .then((res) => {
@@ -179,14 +174,14 @@ class AddPatient extends Component {
                   //alert('Patient added');
                 }) // JSON-string from `response.json()` call
               .catch(error => console.error(error));
-
-            this.postData(`${config.apiurl}/api/Patient_profile`, patientProfilePOSTData)
+            
+            setTimeout(() => {
+              this.postData(`${config.apiurl}/api/Patient_profile`, patientProfilePOSTData)
               .then(data => {
                 console.log(JSON.stringify(data));
               }) // JSON-string from `response.json()` call
               .catch(error => console.error(error));
-
-
+            }, 5000);
           });
   }
   

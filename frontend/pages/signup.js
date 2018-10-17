@@ -71,16 +71,16 @@ class Signup extends Component {
             this.postData(`${config.apiurl}/api/Doctor`, doctorPOSTData)
               .then(data => console.log(JSON.stringify(data))) // JSON-string from `response.json()` call
               .catch(error => console.error(error));
-
-            this.postData(`${config.apiurl}/api/Doctor_profile`, values)
+            
+            setTimeout(() => {
+              this.postData(`${config.apiurl}/api/Doctor_profile`, values)
               .then(data => {
                 console.log(JSON.stringify(data));
                 localStorage.setItem('docid', doctorID);
               }) // JSON-string from `response.json()` call
               .catch(error => console.error(error));
-            
+            }, 5000);
           });
-        
       }
     });
   }
